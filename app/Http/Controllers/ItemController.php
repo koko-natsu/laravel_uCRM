@@ -9,24 +9,24 @@ use Inertia\Inertia;
 
 class ItemController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function index()
     {
-        return Inertia::render('Items/Index');
+        $items = Item::select('id', 'name', 'price')
+            ->selectRaw("CASE is_selling WHEN 1 THEN '販売中' ELSE '売切' END AS is_selling")
+            ->get();
+
+        // dd($items);
+
+        return Inertia::render('Items/Index', [
+            'items' => $items,
+        ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function create()
     {
-        //
+        return Inertia::render('Items/Create');
     }
 
     /**
@@ -37,7 +37,13 @@ class ItemController extends Controller
      */
     public function store(StoreItemRequest $request)
     {
-        //
+        Item::create([
+            'name' => $request->name,
+            'memo' => $request->memo,
+            'price' => $request->price,
+        ]);
+
+        return to_route('items.index');
     }
 
     /**
@@ -48,7 +54,7 @@ class ItemController extends Controller
      */
     public function show(Item $item)
     {
-        //
+        
     }
 
     /**
