@@ -13,7 +13,7 @@ class ItemController extends Controller
     public function index()
     {
         $items = Item::select('id', 'name', 'price')
-            ->selectRaw("CASE is_selling WHEN 1 THEN '販売中' ELSE '売切' END AS is_selling")
+            ->selectRaw("CASE is_selling WHEN 1 THEN '販売中' ELSE '停止中' END AS is_selling")
             ->get();
 
         // dd($items);
@@ -58,7 +58,9 @@ class ItemController extends Controller
      */
     public function show(Item $item)
     {
-        
+        return Inertia::render('Items/Show', [
+            'item' => $item,
+        ]);
     }
 
     /**
@@ -69,7 +71,9 @@ class ItemController extends Controller
      */
     public function edit(Item $item)
     {
-        //
+        return Inertia::render('Items/Edit', [
+            'item' => $item,
+        ]);
     }
 
     /**
@@ -81,7 +85,20 @@ class ItemController extends Controller
      */
     public function update(UpdateItemRequest $request, Item $item)
     {
-        //
+        // dd($request->name, $item->name);
+
+        $item->update([
+            'name' => $request->name,
+            'memo' => $request->memo,
+            'price' => $request->price,
+            'is_selling' => $request->is_selling,
+        ]);
+
+        return to_route('items.index')
+        ->with([
+            'message' => '更新しました',
+            'status'  => 'success',
+        ]);
     }
 
     /**
