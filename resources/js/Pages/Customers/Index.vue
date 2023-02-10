@@ -3,15 +3,22 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head, Link } from '@inertiajs/vue3';
 import FlashMessage from '@/Components/FlashMessage.vue';
 import Pagination from '@/Components/Pagination.vue';
-import { onMounted } from 'vue';
+import { onMounted, ref } from 'vue';
+import { Inertia } from '@inertiajs/inertia';
+
+const search = ref('')
 
 const props = defineProps({
   customers: Object,
 })
 
-onMounted(() => {
-  console.log(props.customers)
-})
+const searchCustomers = () => {
+  Inertia.get(route('customers.index'), { search: search.value })
+}
+
+// onMounted(() => {
+//   console.log(props.customers)
+// })
 
 </script>
 
@@ -34,16 +41,27 @@ onMounted(() => {
                           <div class="container px-5 py-8 mx-auto">
                             <FlashMessage />
                             <div class="flex pl-4 my-4 lg:w-2/3 w-full mx-auto">
+                              <!-- 検索 -->
+                              <div>
+                                <input type="text" name="search" v-model="search" />
+                                <button @click="searchCustomers" class="ml-4 bg-blue-300 text-white py-2 px-2">
+                                  検索
+                                </button>
+                                <span class="ml-4">{{  }}件ヒット</span>
+                              </div>
+                              <!-- 顧客新規登録 -->
                               <Link as="button" :href="route('customers.create')" class="flex ml-auto text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded">顧客登録</Link>
                             </div>
                             <div class="lg:w-2/3 w-full mx-auto overflow-auto">
+                              <!-- 顧客リスト -->
                               <table class="table-auto w-full text-left whitespace-no-wrap">
                                 <thead>
                                   <tr>
                                     <th class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100 rounded-tl rounded-bl">ID</th>
                                     <th class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">指名</th>
                                     <th class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">カナ</th>
-                                    <th class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">電話番号</th>                                  </tr>
+                                    <th class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">電話番号</th>
+                                  </tr>
                                 </thead>
                                 <tbody>
                                   <tr v-for="customer in customers.data" :key="customer.id">

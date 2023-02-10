@@ -8,4 +8,17 @@ use Illuminate\Database\Eloquent\Model;
 class Customer extends Model
 {
     use HasFactory;
+
+    public function scopeSearchCustomer($query, $input = null)
+    {
+
+        if(!empty($input)) {
+            if(Customer::where('kana', 'like', $input.'%')->orWhere('tel', 'like', $input.'%')->exists())
+            {
+            return $query->select('id', 'name', 'kana', 'tel')
+                ->where('kana', 'like', $input.'%')
+                ->orWhere('tel', 'like', $input.'%');
+            } 
+        }
+    }
 }

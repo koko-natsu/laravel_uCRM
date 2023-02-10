@@ -6,20 +6,18 @@ use App\Models\Customer;
 use App\Http\Requests\StoreCustomerRequest;
 use App\Http\Requests\UpdateCustomerRequest;
 use Inertia\Inertia;
+use Illuminate\Http\Request;
 
 class CustomerController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+    public function index(Request $request)
     {
-        $customers = Customer::select('id', 'name', 'kana', 'tel')->paginate(50);
+        $query = Customer::searchCustomer($request->search);
+        $customers = $query->paginate(50);
 
+        // TODO: 検索された件数をviewに表示したい
         return Inertia::render('Customers/Index',[
-            'customers' =>$customers,
+            'customers' => $customers,
         ]);
     }
 
