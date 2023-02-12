@@ -23,7 +23,6 @@ class Customer extends Model
 
     public function scopeSearchCustomer($query, $input = null)
     {
-
         if(!empty($input)) {
             if(Customer::where('kana', 'like', $input.'%')->orWhere('tel', 'like', $input.'%')->exists())
             {

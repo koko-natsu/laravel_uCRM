@@ -33,37 +33,38 @@ const deleteItem = id => {
                 <div class="container px-5 py-8 mx-auto">
                   <div class="lg:w-1/2 md:w-2/3 mx-auto">
                     <div class="flex flex-wrap -m-2">
-
+                      <!-- 名前 -->
                       <div class="p-2 w-full">
                         <div class="relative">
                           <label for="name" class="leading-7 text-sm text-gray-600">商品名</label>
-                          <div id="name"  class="w-full bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+                          <div id="name"  class="w-full h-10 bg-opacity-50 rounded border border-gray-300 text-base text-gray-700 py-1 px-3 leading-8">
                           {{ item.name }}
                           </div>
                         </div>
                       </div>
-
+                      <!-- メモ -->
                       <div class="p-2 w-full">
                         <div class="relative">
                           <label for="memo" class="leading-7 text-sm text-gray-600">メモ</label>
-                          <div id="memo" v-html="nl2br(item.memo)" class="w-full bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 resize-none leading-6 transition-colors duration-200 ease-in-out">
+                          <div id="memo" class="whitespace-pre-wrap h-32 w-full bg-opacity-50 rounded border border-gray-300 text-base text-gray-700 py-1 px-3 leading-8">
+                            {{ item.memo }}
                           </div>
                         </div>
                       </div>
-
+                      <!-- 価格 -->
                       <div class="p-2 w-full">
                         <div class="relative">
                           <label for="price" class="leading-7 text-sm text-gray-600">価格</label>
-                          <div id="price" class="w-full bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+                          <div id="price" class="w-full h-10 bg-opacity-50 rounded border border-gray-300 text-base text-gray-700 py-1 px-3 leading-8">
                           {{ item.price }}
                           </div>
                         </div>
                       </div>
-
+                      <!-- ステータス -->
                       <div class="p-2 w-full">
                         <div class="relative">
                           <label for="is_selling" class="leading-7 text-sm text-gray-600">ステータス</label>
-                          <div id="is_selling" class="w-full bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+                          <div id="is_selling" class="w-full h-10 bg-opacity-50 rounded border border-gray-300 text-base text-gray-700 py-1 px-3 leading-8">
                             <span v-if="item.is_selling === 1">販売中</span>
                             <span v-if="item.is_selling === 0">停止中</span>
                           </div>
