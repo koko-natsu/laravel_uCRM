@@ -76,7 +76,7 @@ const updateItem = id => {
                                 <input type="radio" id="not_sell" name="is_selling" v-model="form.is_selling" value="0" class="ml-4"/>
                                 <label for="not_sell" class="ml-2 mr-4">停止中</label>
                               </div>
-                              <InputError class="mt-2" :message="errors.price" />
+                              <InputError class="mt-2" :message="errors.is_selling" />
                             </div>
                             
                             <div class="p-2 w-full">

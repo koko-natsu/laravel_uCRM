@@ -25,10 +25,10 @@ return [
     'before'               => ':attributeには、:dateより前の日付をご利用ください。',
     'before_or_equal'      => ':attributeには、:date以前の日付をご利用ください。',
     'between'              => [
-        'numeric' => ':attributeは、:minから:maxの間で指定してください。',
-        'file'    => ':attributeは、:min kBから、:max kBの間で指定してください。',
-        'string'  => ':attributeは、:min文字から、:max文字の間で指定してください。',
-        'array'   => ':attributeは、:min個から:max個の間で指定してください。',
+    'numeric' => ':attributeは、:minから:maxの間で指定してください。',
+    'file'    => ':attributeは、:min kBから、:max kBの間で指定してください。',
+    'string'  => ':attributeは、:min文字から、:max文字の間で指定してください。',
+    'array'   => ':attributeは、:min個から:max個の間で指定してください。',
     ],
     'boolean'              => ':attributeは、trueかfalseを指定してください。',
     'confirmed'            => ':attributeと、確認フィールドとが、一致していません。',
@@ -154,11 +154,18 @@ return [
     */
 
     'attributes' => [
-      'title' => '件名',
-      'content' => '本文',
-      'name' => '名',
-      'memo' => 'メモ',
-      'price' => '価格',
+        'title' => '件名',
+        'content' => '本文',
+        'name' => '名',
+        'memo' => 'メモ',
+        'price' => '価格',
+        'kana' => '送り仮名',
+        'tel' => '電話番号',
+        'email' => 'メールアドレス',
+        'postcode' => '郵便番号',
+        'address' => '住所',
+        'birthday' => '誕生日',
+        'gender' => '性別',
     ],
 
 ];
