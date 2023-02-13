@@ -25,7 +25,7 @@ class StoreCustomerRequest extends FormRequest
     {
         return [
             'name' => ['required', 'max:50'],
-            'kana'=> ['required', 'max:50', 'regex:/^[ァ-ヴー]+$/u'],
+            'kana'=> ['required', 'max:50', 'regex:/\A[ァ-ヴー]+|[ｦ-ﾟ]+\z/u'],
             'tel'=> ['required', 'unique:customers,tel'],
             'email'=> ['required', 'unique:customers,email', 'max:255'],
             'postcode'=> ['required', 'numeric'],
