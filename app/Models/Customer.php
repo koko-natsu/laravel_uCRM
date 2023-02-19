@@ -35,6 +35,6 @@ class Customer extends Model
     }
 
     public function purchases() {
-        return $this->hashMany(Parchase::class);
+        return $this->hasMany(Parchase::class);
     }
 }

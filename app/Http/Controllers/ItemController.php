@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Item;
 use App\Http\Requests\StoreItemRequest;
 use App\Http\Requests\UpdateItemRequest;
+use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 
 class ItemController extends Controller
@@ -12,11 +13,10 @@ class ItemController extends Controller
 
     public function index()
     {
-        $items = Item::select('id', 'name', 'price')
-            ->selectRaw("CASE is_selling WHEN 1 THEN '販売中' ELSE '停止中' END AS is_selling")
+        $items = DB::table('items')
+            ->selectRaw("id, name, price, 
+            (CASE WHEN is_selling = 1 THEN '販売中' ELSE '停止中' END ) AS is_selling")
             ->get();
-
-        // dd($items);
 
         return Inertia::render('Items/Index', [
             'items' => $items,

@@ -12,12 +12,22 @@ class CustomerController extends Controller
 {
     public function index(Request $request)
     {
+        /* FIXME:
+        - $require->searchに0を入れると、$customer_countに0が渡される。
+        */ 
         $query = Customer::searchCustomer($request->search);
-        $customers = $query->paginate(50);
+        $customers = $query->paginate(50)
+                           ->withPath("/customers?search={$request->search}");
 
-        // TODO: 検索された件数をviewに表示したい
+        if($query->count() == Customer::count()) {
+            $customer_count = NULL;
+        } else {
+            $customer_count = $query->count();
+        };
+
         return Inertia::render('Customers/Index',[
             'customers' => $customers,
+            'count' => $customer_count,
         ]);
     }
 

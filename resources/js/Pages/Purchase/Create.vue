@@ -5,10 +5,10 @@ import { Head } from '@inertiajs/vue3';
 import { onMounted, reactive, ref, computed } from 'vue';
 import { getToday } from '@/common';
 import { Inertia } from '@inertiajs/inertia';
+import MicroModal from "@/Components/MIcroModal.vue"
 
 const props = defineProps({
   errors: Object,
-  customers: Array,
   items: Array,
 })
 
@@ -56,6 +56,11 @@ onMounted(() =>{
   })
 })
 
+/* Emit */
+const setCustomerId = id => {
+  form.customer_id = id
+  console.log(id)
+}
 
 </script>
 
@@ -88,12 +93,8 @@ onMounted(() =>{
                     <div class="p-2 w-full">
                         <div class="relative">
                           <label class="leading-7 text-sm text-gray-600">顧客名</label>
-                          <select name="customer" v-model="form.customer_id" class="w-full h-10 bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 resize-none leading-6 transition-colors duration-200 ease-in-out">
-                            <option v-for="customer in customers" :value="customer.id" :key="customer.id">
-                              {{ customer.id }} : {{ customer.name }}
-                            </option>
-                          </select>
                           <InputError class="mt-2" :message="props.errors.customer_id" />
+                          <MicroModal @update:customer-id="setCustomerId"/>
                         </div>
                     </div>
                     <!-- 表 -->

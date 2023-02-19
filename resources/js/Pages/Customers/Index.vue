@@ -9,16 +9,17 @@ import { Inertia } from '@inertiajs/inertia';
 const search = ref('')
 
 const props = defineProps({
-  customers: Object,
+  customers: Array,
+  count: String,
 })
 
 const searchCustomers = () => {
   Inertia.get(route('customers.index'), { search: search.value })
 }
 
-// onMounted(() => {
-//   console.log(props.customers)
-// })
+onMounted(() => {
+  console.log(props.customers.links)
+})
 
 </script>
 
@@ -47,7 +48,9 @@ const searchCustomers = () => {
                                 <button @click="searchCustomers" class="ml-4 bg-blue-300 text-white py-2 px-2">
                                   検索
                                 </button>
-                                <span class="ml-4">{{  }}件ヒット</span>
+                                <span v-if="count > 0">{{ count }}件ヒット</span>
+                                <span v-else></span>
+                                <!-- <span class="ml-4">{{ count }}件ヒット</span> -->
                               </div>
                               <!-- 顧客新規登録 -->
                               <Link as="button" :href="route('customers.create')" class="flex ml-auto text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded">顧客登録</Link>
