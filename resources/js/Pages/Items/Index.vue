@@ -43,7 +43,8 @@ defineProps({
                                     <td class="px-4 py-3"><Link class="text-blue-400" :href="route('items.show', { item: item.id  })" >{{ item.id }}</Link></td>
                                     <td class="px-4 py-3">{{ item.name }}</td>
                                     <td class="px-4 py-3">{{ item.price }}</td>
-                                    <td class="px-4 py-3">{{ item.is_selling }}</td>
+                                    <td v-if="item.is_sellinkg = 0" class="px-4 py-3">停止中</td>
+                                    <td v-else-if="item.is_sellinkg = 1" class="px-4 py-3">販売中</td>
                                   </tr>
                                 </tbody>
                               </table>

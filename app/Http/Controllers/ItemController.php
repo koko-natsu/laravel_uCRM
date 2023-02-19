@@ -13,10 +13,8 @@ class ItemController extends Controller
 
     public function index()
     {
-        $items = DB::table('items')
-            ->selectRaw("id, name, price, 
-            (CASE WHEN is_selling = 1 THEN '販売中' ELSE '停止中' END ) AS is_selling")
-            ->get();
+        $items = Item::select('id', 'name', 'price', 'is_selling')
+        ->get();
 
         return Inertia::render('Items/Index', [
             'items' => $items,
