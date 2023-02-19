@@ -24,9 +24,9 @@ class PurchaseController extends Controller
         ->selectRaw('id, customer_name, 
         status, sum(subtotal) as total, created_at')
         ->paginate(50);
-        
+
         return Inertia::render('Purchase/Index', [
-            'orders' => $order,
+            'orders' => $orders,
         ]);
     }
 
