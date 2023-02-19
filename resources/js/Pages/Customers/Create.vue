@@ -2,7 +2,7 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import InputError from '@/Components/InputError.vue';
 import { Head } from '@inertiajs/vue3';
-import { reactive } from 'vue';
+import { reactive, onMounted } from 'vue';
 import { Inertia } from '@inertiajs/inertia';
 import { Core as YubinBangoCore } from "yubinbango-core2";
 
@@ -28,7 +28,6 @@ const storeCustomer = () => {
 
 const fetchAddress = () => {
   new YubinBangoCore(String(form.postcode), (value) => {
-    // console.log(value)
     form.address = value.region + value.locality + value.street
   })
 }
