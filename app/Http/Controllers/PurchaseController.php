@@ -13,28 +13,21 @@ use App\Models\Order;
 
 class PurchaseController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
         $orders = Order::groupBy('id')
-        ->selectRaw('id, customer_name, 
-        status, sum(subtotal) as total, created_at')
-        ->paginate(50);
+            ->selectRaw('id,
+                        customer_name,
+                        status,
+                        sum(subtotal) as total,
+                        created_at')->paginate(50);
 
         return Inertia::render('Purchase/Index', [
             'orders' => $orders,
         ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response 
-     */
+
     public function create()
     {
         $items = Item::select('id', 'name', 'price')
@@ -46,12 +39,8 @@ class PurchaseController extends Controller
         ]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \App\Http\Requests\StorePurchaseRequest  $request
-     * @return \Illuminate\Http\Response
-     */
+
+
     public function store(StorePurchaseRequest $request)
     {
         DB::beginTransaction();
@@ -75,31 +64,72 @@ class PurchaseController extends Controller
         } 
         catch (\Exception $e) {
             DB::rollback();
-            /* logへの記載 */
+            /*TODO: logへの記載 */
         }
 
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Purchase  $purchase
-     * @return \Illuminate\Http\Response
-     */
+
+
     public function show(Purchase $purchase)
     {
-        //
+        $items = Order::where('id', $purchase->id)->get();
+
+        $order = Order::groupBy('id')
+            ->where('id', $purchase->id)
+            ->selectRaw('id,
+                        customer_name, 
+                        status,
+                        sum(subtotal) as total,
+                        created_at,
+                        updated_at')->get();
+
+        // dd($order);
+
+        return Inertia::render('Purchase/Show', [
+            'items' => $items,
+            'order' => $order,
+        ]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Purchase  $purchase
-     * @return \Illuminate\Http\Response
-     */
+
+
     public function edit(Purchase $purchase)
     {
-        //
+        $purchase = Purchase::find($purchase->id);
+        $allItems    = Item::select('id', 'name', 'price')->get();
+
+        $items = [];
+        foreach($allItems as $allItem) {
+            $quanitity = 0;
+            foreach($purchase->items as $item) {
+                if ($allItem->id === $item->id) {
+                    $quanitity = $item->pivot->quantity;
+                }
+            }
+            
+            array_push($items, [
+                'id'       => $allItem->id,
+                'name'     => $allItem->name,
+                'price'    => $allItem->price,
+                'quantity' => $quanitity,
+            ]);
+        }
+
+        $order = Order::groupBy('id')
+            ->where('id', $purchase->id)
+            ->selectRaw('
+                    id,
+                    customer_name, 
+                    status,
+                    sum(subtotal) as total,
+                    created_at,
+                    updated_at')->get();
+
+        return Inertia::render('Purchase/Edit', [
+            'items' => $items,
+            'order' => $order,
+        ]);
     }
 
     /**
@@ -111,7 +141,31 @@ class PurchaseController extends Controller
      */
     public function update(UpdatePurchaseRequest $request, Purchase $purchase)
     {
-        //
+        // dd($request);
+        
+        try {
+            DB::beginTransaction();
+    
+            $purchase->status = $request->status;
+            $purchase->save();
+    
+            $items = [];
+            foreach($request->items as $item) {
+                $items = $items + [
+                    $item['id'] => ['quantity' => $item['quantity']],
+                ];
+            }
+
+            $purchase->items()->sync($items);
+
+            DB::commit();
+
+            return to_route('dashboard');
+
+        } catch (\Exception $e) {
+            DB::rollback();
+            /*TODO: logへの記載 */
+        }
     }
 
     /**

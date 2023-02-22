@@ -17,6 +17,7 @@ class Purchase extends Model
         'status',
     ];
 
+    
     /* Relation */
     public function customer() {
         return $this->belongsTo(Customer::class);
