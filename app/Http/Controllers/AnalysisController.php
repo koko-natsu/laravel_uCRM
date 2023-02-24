@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 use App\Models\Order;
 
@@ -10,17 +11,8 @@ class AnalysisController extends Controller
 {
     
     
-    public function index() {
-        $startDate = '2022-08-01';
-        $endDate = '2022-12-31';
-
-        $priod = Order::betweenDate($startDate, $endDate)
-            ->groupBy('id')
-            ->selectRaw('id, sum(subtotal) as total, customer_name,
-            status, created_at')
-            ->orderBy('created_at')
-            ->paginate(50);
-
+    public function index() 
+    {
         return Inertia::render('Analysis');
     }
 }
