@@ -9,17 +9,17 @@ import { Inertia } from '@inertiajs/inertia';
 const search = ref('')
 
 const props = defineProps({
-  customers: Array,
-  count: String,
+  customers: Object,
+  count: Number,
 })
 
 const searchCustomers = () => {
   Inertia.get(route('customers.index'), { search: search.value })
 }
 
-onMounted(() => {
-  console.log(props.customers.links)
-})
+// onMounted(() => {
+//   console.log(props.customers.links)
+// })
 
 </script>
 

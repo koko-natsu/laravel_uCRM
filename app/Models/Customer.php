@@ -29,12 +29,13 @@ class Customer extends Model
             {
             return $query->select('id', 'name', 'kana', 'tel')
                 ->where('kana', 'like', $input.'%')
-                ->orWhere('tel', 'like', $input.'%');
+                ->orWhere('tel', 'like', $input.'%')
+                ->groupBy('id');
             } 
         }
     }
 
     public function purchases() {
-        return $this->hasMany(Parchase::class);
+        return $this->hasMany(Purchase::class);
     }
 }
