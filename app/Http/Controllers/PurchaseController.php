@@ -43,6 +43,11 @@ class PurchaseController extends Controller
 
     public function store(StorePurchaseRequest $request)
     {
+        /* FIXME:
+         * Allow only logged in users to register, update as well.
+         * 
+         */
+        
         DB::beginTransaction();
 
         try {

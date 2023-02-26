@@ -12,7 +12,8 @@ class CustomerController extends Controller
 {
     public function index(Request $request)
     {
-        /* FIXME:
+
+         /* FIXME:
         - $require->searchに0を入れると、$customer_countに0が渡される。
         */ 
         $query = Customer::searchCustomer($request->search);
@@ -30,7 +31,7 @@ class CustomerController extends Controller
             'count' => $customer_count,
         ]);
     }
-
+    
 
     public function create()
     {
@@ -40,6 +41,10 @@ class CustomerController extends Controller
 
     public function store(StoreCustomerRequest $request)
     {
+        /* FIXME:
+         * Allow only logged in users to register, update as well.
+         * 
+         */
         Customer::create([
             'name' => $request->name,
             'kana' => $request->kana,

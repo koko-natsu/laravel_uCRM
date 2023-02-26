@@ -27,14 +27,15 @@ class ItemController extends Controller
         return Inertia::render('Items/Create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \App\Http\Requests\StoreItemRequest  $request
-     * @return \Illuminate\Http\Response
-     */
+
     public function store(StoreItemRequest $request)
     {
+        /**
+         * FIXME:
+         * Allow only logged in users to register, update as well.
+         * 
+         */
+
         Item::create([
             'name' => $request->name,
             'memo' => $request->memo,

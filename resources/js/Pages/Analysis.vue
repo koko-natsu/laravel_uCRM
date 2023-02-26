@@ -57,11 +57,11 @@ const getData = async () => {
                             To: <input type="date" name="endDate" v-model="form.endDate"><br>
                             <button class="mt-4 flex mx-auto text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg">分析する</button>
                         </form>
-                        
-                        <div v-show="data.data">
-                            <Chart :data="data"/>
-                        </div>
 
+                            <div v-show="data.data">
+                                <Chart :data="data"/>
+                            </div>
+                        
                         <div v-show="data.data" class="lg:w-2/3 w-full mx-auto overflow-auto">
                             <table class="table-auto w-full text-left whitespace-no-wrap">
                                 <thead>

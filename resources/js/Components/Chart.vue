@@ -19,15 +19,17 @@ const barData = reactive({
       label: '売上',
       data: totals,
       backgroundColor: "rgb(75,192,192)",
-      tension: 0.01, 
     }
-  ]
+  ],
+  options: {
+    responsive: true,
+  }
 })
 
 </script>
 
 <template>
 <div v-show="props.data">
-  <BarChart :chartData="barData" />
+    <BarChart :chartData="barData" class="chart-container" style="position: relative; height: 50vh; width: 80vw;"/>
 </div>
 </template>
