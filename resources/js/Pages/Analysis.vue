@@ -53,15 +53,27 @@ const getData = async () => {
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                     <div class="p-6 text-gray-900">
                         <form @submit.prevent="getData">
+                            <!-- 分析日付 -->
+                            <label class="block leading-7 text-gray-600">分析方法</label>
+                            <div class="relative">
+                                <input type="radio" id="perDay" name="gender" v-model="form.type" value="perDay" checked/>
+                                <label for="perDay" class="ml-2 mr-4 leading-7 text-sm text-gray-600">日</label>
+                                <input type="radio" id="perMonth" name="gender" v-model="form.type" value="perMonth"/>
+                                <label for="perMonth" class="ml-2 mr-4 leading-7 text-sm text-gray-600">月</label>
+                                <input type="radio" id="perYear" name="gender" v-model="form.type" value="perYear"/>
+                                <label for="perYear" class="ml-2 mr-4 leading-7 text-sm text-gray-600">年</label>
+                            </div>
                             From: <input type="date" name="startDate" v-model="form.startDate">
                             To: <input type="date" name="endDate" v-model="form.endDate"><br>
                             <button class="mt-4 flex mx-auto text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg">分析する</button>
                         </form>
 
-                            <div v-show="data.data">
-                                <Chart :data="data"/>
-                            </div>
-                        
+                        <!-- チャート -->
+                        <div v-show="data.data">
+                            <Chart :data="data"/>
+                        </div>  
+
+                        <!-- テーブル -->
                         <div v-show="data.data" class="lg:w-2/3 w-full mx-auto overflow-auto">
                             <table class="table-auto w-full text-left whitespace-no-wrap">
                                 <thead>

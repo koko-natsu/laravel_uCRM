@@ -17,11 +17,8 @@ class AnalysisController extends Controller
 
         $subQuery = Order::betweenDate($request->startDate,
                                        $request->endDate);
-
-        if($request->type === 'perDay')
-        {
-           list($data, $labels, $totals) = AnalysisService::perDay($subQuery);
-        }
+                                       
+        list($data, $labels, $totals) = AnalysisService::perDate($subQuery, $request->type);
 
         return response()->json([
             'data' => $data,

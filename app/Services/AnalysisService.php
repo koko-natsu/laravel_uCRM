@@ -6,13 +6,23 @@ use Illuminate\Support\Facades\DB;
 
 class AnalysisService {
 
-  public static function perDay($subQuery) 
+  public static function perDate($subQuery, $type) 
   {
+    $return_value = match($type) {
+      'perDay'   => "%Y%m%d",
+      'perMonth' => "%Y%m",
+      'perYear'  => "%Y"
+      /** 
+       * TODO:
+       * Errorの対処
+       */
+    };
+
     $query = $subQuery->where('status', true)
     ->groupBy('id')
     ->selectRaw('id,
                 SUM(subtotal) as totalPerPurchase,
-                DATE_FORMAT(created_at, "%Y%m%d") as date');
+                DATE_FORMAT(created_at, ?) as date', [$return_value]);
 
     $data = DB::table($query)
     ->groupBy('date')
