@@ -16,19 +16,22 @@ class CustomerController extends Controller
          /* FIXME:
         - $require->searchに0を入れると、$customer_countに0が渡される。
         */ 
-        $query = Customer::searchCustomer($request->search);
+        list($query, $result) = Customer::searchCustomer($request->search);
+
         $customers = $query->paginate(50)
                            ->withPath("/customers?search={$request->search}");
 
-        if($query->count() == Customer::count()) {
-            $customer_count = NULL;
-        } else {
-            $customer_count = $query->count();
-        };
+        if($result){
+            $count = $customers->total();
+        }
+        else {
+            $count = 0;
+            $message = '該当する顧客はいませんでした。';
+        }
 
         return Inertia::render('Customers/Index',[
             'customers' => $customers,
-            'count' => $customer_count,
+            'count' => $count,
         ]);
     }
     

@@ -25,14 +25,15 @@ class Customer extends Model
     public function scopeSearchCustomer($query, $input = null)
     {
         if(!empty($input)) {
-            if(Customer::where('kana', 'like', $input.'%')->orWhere('tel', 'like', $input.'%')->exists())
+            $result = Customer::where('kana', 'like', $input.'%')->orWhere('tel', 'like', $input.'%')->exists();
+            if($result)
             {
-            return $query->select('id', 'name', 'kana', 'tel')
+            return [$query->select('id', 'name', 'kana', 'tel')
                 ->where('kana', 'like', $input.'%')
-                ->orWhere('tel', 'like', $input.'%')
-                ->groupBy('id');
+                ->orWhere('tel', 'like', $input.'%'), $result];
             } 
         }
+        return [$query, $result = false];
     }
 
     public function purchases() {
