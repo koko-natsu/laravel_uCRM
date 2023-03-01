@@ -13,9 +13,6 @@ class CustomerController extends Controller
     public function index(Request $request)
     {
 
-         /* FIXME:
-        - $require->searchに0を入れると、$customer_countに0が渡される。
-        */ 
         list($query, $result) = Customer::searchCustomer($request->search);
 
         $customers = $query->paginate(50)

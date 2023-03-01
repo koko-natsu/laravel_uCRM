@@ -21,6 +21,7 @@ Route::middleware('auth:sanctum')
     return Customer::searchCustomer($request->search)->paginate(50);
 });
 
+
 Route::middleware('auth:sanctum')
 ->get('/analysis', [ AnalysisController::class, 'index'])
 ->name('api.analysis');

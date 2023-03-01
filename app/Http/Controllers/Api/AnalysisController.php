@@ -8,6 +8,8 @@ use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 use App\Models\Order;
 use App\Services\AnalysisService;
+use App\Services\DecileService;
+
 
 
 class AnalysisController extends Controller
@@ -17,8 +19,12 @@ class AnalysisController extends Controller
 
         $subQuery = Order::betweenDate($request->startDate,
                                        $request->endDate);
-                                       
-        list($data, $labels, $totals) = AnalysisService::perDate($subQuery, $request->type);
+        
+        if($request->type === 'decile') {
+            list($data, $labels, $totals) = DecileService::decile($subQuery);
+        } else {
+            list($data, $labels, $totals) = AnalysisService::perDate($subQuery, $request->type);
+        }
 
         return response()->json([
             'data' => $data,

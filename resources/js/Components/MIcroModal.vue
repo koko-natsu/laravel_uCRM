@@ -15,7 +15,7 @@ const searchCustomer = async () => {
   try {
     await axios.get(`/api/searchCustomers/?search=${search.value}`)
     .then( res => {
-      console.log(res.data)
+      // console.log(res.data)
       customers.value = res.data
     })
     toggleStatus()
@@ -43,7 +43,7 @@ const setCustomer = e => {
       <div class="modal__container w-2/3" role="dialog" aria-modal="true" aria-labelledby="modal-1-title">
         <header class="modal__header">
           <h2 class="modal__title" id="modal-1-title">
-            顧客検索
+            顧客検索  
           </h2>
           <button @click="toggleStatus" type="button" class="modal__close" aria-label="Close modal" data-micromodal-close></button>
         </header>

@@ -11,7 +11,7 @@ class AnalysisService {
     $return_value = match($type) {
       'perDay'   => "%Y%m%d",
       'perMonth' => "%Y%m",
-      'perYear'  => "%Y"
+      'perYear'  => "%Y",
       /** 
        * TODO:
        * Errorの対処

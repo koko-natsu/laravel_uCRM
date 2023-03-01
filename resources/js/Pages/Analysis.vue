@@ -4,19 +4,23 @@ import { Head } from '@inertiajs/vue3';
 import { getToday } from '@/common';
 import { reactive, onMounted } from 'vue';
 import Chart from '@/Components/Chart.vue';
+import ResultTable from '@/Components/ResultTable.vue';
 
-onMounted(() => {
-    form.startDate = getToday()
-    form.endDate   = getToday()
-})
 
+const data = reactive({})
 const form = reactive({
     startDate: null,
     endDate:   null,
     type: 'perDay',
 })
 
-const data = reactive({})
+
+// 現在の日付を取得
+onMounted(() => {
+    form.startDate = getToday()
+    form.endDate   = getToday()
+})
+
 
 const getData = async () => {
     try {
@@ -30,8 +34,8 @@ const getData = async () => {
         .then( res => {
             data.data = res.data.data
             data.labels = res.data.labels
+            data.type = res.data.type
             data.totals = res.data.totals
-            // console.log(data)
         })
     } catch (e) {
         console.log(e)
@@ -53,7 +57,7 @@ const getData = async () => {
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                     <div class="p-6 text-gray-900">
                         <form @submit.prevent="getData">
-                            <!-- 分析日付 -->
+                            <!-- 分析方法 -->
                             <label class="block leading-7 text-gray-600">分析方法</label>
                             <div class="relative">
                                 <input type="radio" id="perDay" name="gender" v-model="form.type" value="perDay" checked/>
@@ -62,34 +66,22 @@ const getData = async () => {
                                 <label for="perMonth" class="ml-2 mr-4 leading-7 text-sm text-gray-600">月</label>
                                 <input type="radio" id="perYear" name="gender" v-model="form.type" value="perYear"/>
                                 <label for="perYear" class="ml-2 mr-4 leading-7 text-sm text-gray-600">年</label>
+                                <input type="radio" id="decile" name="gender" v-model="form.type" value="decile"/>
+                                <label for="decile" class="ml-2 mr-4 leading-7 text-sm text-gray-600">デシル分析</label>
                             </div>
+                            <!-- 分析日付 -->
                             From: <input type="date" name="startDate" v-model="form.startDate">
                             To: <input type="date" name="endDate" v-model="form.endDate"><br>
-                            <button class="mt-4 flex mx-auto text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg">分析する</button>
+                            <button class="mt-4 flex mx-auto text-white bg-indigo-500 border-0 py-2 px-8 hover:bg-indigo-700 rounded text-lg">分析する</button>
                         </form>
 
                         <!-- チャート -->
                         <div v-show="data.data">
                             <Chart :data="data"/>
-                        </div>  
-
-                        <!-- テーブル -->
-                        <div v-show="data.data" class="lg:w-2/3 w-full mx-auto overflow-auto">
-                            <table class="table-auto w-full text-left whitespace-no-wrap">
-                                <thead>
-                                    <tr>
-                                        <th class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100 rounded-tl rounded-bl">日付</th>
-                                        <th class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">合計金額</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr v-for="item in data.data" :key="item.date">
-                                        <td class="px-4 py-3">{{ item.date }}</td>
-                                        <td class="px-4 py-3">{{ item.total }}</td>
-                                    </tr>
-                                </tbody>
-                            </table>
                         </div>
+                        <!-- テーブル -->
+                        <ResultTable :data="data"/>
+                        
                     </div>
                 </div>
             </div>

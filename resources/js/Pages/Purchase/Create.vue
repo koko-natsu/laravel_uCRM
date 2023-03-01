@@ -59,7 +59,7 @@ onMounted(() =>{
 /* Emit */
 const setCustomerId = id => {
   form.customer_id = id
-  console.log(id)
+  // console.log(id)
 }
 
 </script>
