@@ -12,7 +12,13 @@ const form = reactive({
     startDate: null,
     endDate:   null,
     type: 'perDay',
+    rfmPrms : [
+            30, 60, 90, 120, 
+            7,5,3,2,
+            300000, 200000, 100000, 30000
+        ],
 })
+
 
 
 // 現在の日付を取得
@@ -28,14 +34,17 @@ const getData = async () => {
             params: {
                 startDate: form.startDate,
                 endDate: form.endDate,
-                type: form.type
+                type: form.type,
+                rfmPrms: form.rfmPrms,
             }
         })
         .then( res => {
             data.data = res.data.data
-            data.labels = res.data.labels
-            data.type = res.data.type
-            data.totals = res.data.totals
+            if(res. data.labels) {data.labels = res.data.labels}
+            if(res. data.eachCount) {data.eachCount = res.data.eachCount}
+            if(res. data.totals) {data.totals = res.data.totals}
+            data.type = form.type
+            // console.log(res.data)
         })
     } catch (e) {
         console.log(e)
@@ -68,15 +77,56 @@ const getData = async () => {
                                 <label for="perYear" class="ml-2 mr-4 leading-7 text-sm text-gray-600">年</label>
                                 <input type="radio" id="decile" name="gender" v-model="form.type" value="decile"/>
                                 <label for="decile" class="ml-2 mr-4 leading-7 text-sm text-gray-600">デシル分析</label>
+                                <input type="radio" id="rfm" name="gender" v-model="form.type" value="rfm"/>
+                                <label for="rfm" class="ml-2 mr-4 leading-7 text-sm text-gray-600">RFM分析</label>
                             </div>
                             <!-- 分析日付 -->
                             From: <input type="date" name="startDate" v-model="form.startDate">
                             To: <input type="date" name="endDate" v-model="form.endDate"><br>
+                            <!-- RFM -->
+                            <div v-if="form.type === 'rfm' " class="my-8">
+                                <table class="mx-auto">
+                                    <thead>
+                                        <tr>
+                                            <th>ランク</th>
+                                            <th>R(〇日以内)</th>
+                                            <th>F(〇回以上)</th>
+                                            <th>M(〇円以上)</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>5</td>
+                                            <td><input type="number" v-model="form.rfmPrms[0]"></td>
+                                            <td><input type="number" v-model="form.rfmPrms[4]"></td>
+                                            <td><input type="number" v-model="form.rfmPrms[8]"></td>
+                                        </tr>
+                                        <tr>
+                                            <td>4</td>
+                                            <td><input type="number" v-model="form.rfmPrms[1]"></td>
+                                            <td><input type="number" v-model="form.rfmPrms[5]"></td>
+                                            <td><input type="number" v-model="form.rfmPrms[9]"></td>
+                                        </tr>
+                                        <tr>
+                                            <td>3</td>
+                                            <td><input type="number" v-model="form.rfmPrms[2]"></td>
+                                            <td><input type="number" v-model="form.rfmPrms[6]"></td>
+                                            <td><input type="number" v-model="form.rfmPrms[10]"></td>
+                                        </tr>
+                                        <tr>
+                                            <td>2</td>
+                                            <td><input type="number" v-model="form.rfmPrms[3]"></td>
+                                            <td><input type="number" v-model="form.rfmPrms[7]"></td>
+                                            <td><input type="number" v-model="form.rfmPrms[11]"></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
                             <button class="mt-4 flex mx-auto text-white bg-indigo-500 border-0 py-2 px-8 hover:bg-indigo-700 rounded text-lg">分析する</button>
                         </form>
 
                         <!-- チャート -->
-                        <div v-show="data.data">
+                        <div v-if="form.type != 'rfm' && data.data ">
                             <Chart :data="data"/>
                         </div>
                         <!-- テーブル -->
