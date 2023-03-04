@@ -20,7 +20,6 @@ const form = reactive({
 })
 
 
-
 // 現在の日付を取得
 onMounted(() => {
     form.startDate = getToday()
@@ -77,7 +76,7 @@ const getData = async () => {
                                 <label for="perYear" class="ml-2 mr-4 leading-7 text-sm text-gray-600">年</label>
                                 <input type="radio" id="decile" name="gender" v-model="form.type" value="decile"/>
                                 <label for="decile" class="ml-2 mr-4 leading-7 text-sm text-gray-600">デシル分析</label>
-                                <input type="radio" id="rfm" name="gender" v-model="form.type" value="rfm"/>
+                            <input type="radio" id="rfm" name="gender" v-model="form.type" value="rfm"/>
                                 <label for="rfm" class="ml-2 mr-4 leading-7 text-sm text-gray-600">RFM分析</label>
                             </div>
                             <!-- 分析日付 -->

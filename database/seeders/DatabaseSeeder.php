@@ -23,11 +23,11 @@ class DatabaseSeeder extends Seeder
             RankSeeder::class,
         ]);
 
-        Customer::factory(1000)->create();
+        Customer::factory(500)->create();
 
         $items = Item::all();
 
-        Purchase::factory(30000)->create()
+        Purchase::factory(10000)->create()
         ->each(function(Purchase $purchase) use ($items) {
            $purchase->items()->attach(
             $items->random(rand(1,3))->pluck('id')->toArray(),

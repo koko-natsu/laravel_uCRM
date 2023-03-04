@@ -4,26 +4,19 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Models\Customer;
 use App\Http\Controllers\Api\AnalysisController;
+use Illuminate\Support\Facades\Log;
 
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| is assigned the "api" middleware group. Enjoy building your API!
-|
-*/
 
 Route::middleware('auth:sanctum')
 ->get('/searchCustomers', function (Request $request) {
-    return Customer::searchCustomer($request->search)->paginate(50);
+    return Customer::apiSearchCustomer($request->search)->Paginate(50);
+        // ->withPath("/customers?search={$request->search}")
+    ;
 });
 
 
 Route::middleware('auth:sanctum')
-->get('/analysis', [ AnalysisController::class, 'index'])
+->get('/analysis', [AnalysisController::class, 'index'])
 ->name('api.analysis');
 
 
