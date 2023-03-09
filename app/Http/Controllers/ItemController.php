@@ -30,12 +30,6 @@ class ItemController extends Controller
 
     public function store(StoreItemRequest $request)
     {
-        /**
-         * FIXME:
-         * Allow only logged in users to register, update as well.
-         * 
-         */
-
         Item::create([
             'name' => $request->name,
             'memo' => $request->memo,

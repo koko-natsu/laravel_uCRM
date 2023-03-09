@@ -21,8 +21,8 @@ Route::resource('purchases', PurchaseController::class)
     ->middleware(['auth', 'verified']);
 
 Route::get('analysis', [AnalysisController::class, 'index'])
-->middleware(['auth', 'verified'])
-->name('analysis');
+    ->middleware(['auth', 'verified'])
+    ->name('analysis');
 
 
 
