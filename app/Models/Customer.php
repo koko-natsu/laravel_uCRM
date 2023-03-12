@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Purchase;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Log;
 
 class Customer extends Model
@@ -29,7 +30,7 @@ class Customer extends Model
 
     public function scopeSearchCustomer($query, $input=null)
     {   
-        if(!empty($input)) 
+        if(!empty($input))
         {
             if(Customer::where('kana', 'like', $input.'%')
                 ->orWhere('tel', 'like', $input.'%')->exists())
@@ -48,6 +49,7 @@ class Customer extends Model
 
     public function scopeApiSearchCustomer($query, $input=null)
     {
+        dd($query->toSql());
         if(!empty($input))
         {
             if(Customer::where('kana', 'like', $input.'%')
@@ -58,7 +60,10 @@ class Customer extends Model
                         ->orWhere('tel', 'like', $input.'%');
                 }
         }
-        return $query;
+        $data = $query->Paginate(50);
+        return response()->json([
+            'data' => $data,
+        ], Response::HTTP_OK);
     }
 
 }

@@ -31,12 +31,6 @@ class DatabaseSeeder extends Seeder
         ->each(function(Purchase $purchase) use ($items) {
            $purchase->items()->attach(
             $items->random(rand(1,3))->pluck('id')->toArray(),
-            /* random(rand(1,3))は1-3のどれかではなく、1-3個摘出する */
-            /* > $items->random(rand(1,3))->pluck('id')->toArray();
-                = [ 
-                    1,
-                    3,
-                ] */
             ['quantity' => rand(1,5)],
            );
         });

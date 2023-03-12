@@ -41,10 +41,6 @@ class CustomerController extends Controller
 
     public function store(StoreCustomerRequest $request)
     {
-        /* FIXME:
-         * Allow only logged in users to register, update as well.
-         * 
-         */
         Customer::create([
             'name' => $request->name,
             'kana' => $request->kana,

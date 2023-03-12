@@ -14,10 +14,10 @@ const toggleStatus = () => {
 
 const searchCustomer = async () => {
   try {
-    await axios.get(`/api/searchCustomers/?search=${search.value}`)
+    await axios.get(`/api/searchCustomers?search=${search.value}`)
     .then( res => {
-      // console.log(res.data)
-      customers.value = res.data
+      console.log(res.data)
+      customers.value = res.data.data
     })
     toggleStatus()
   } catch(e) {

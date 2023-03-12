@@ -34,7 +34,7 @@ class ItemControllerTest extends TestCase
      * Index
      * Items/Indexの取得
      */
-    public function test_get_items_index()
+    function test_get_items_index()
     {
         $this->get('items')
             ->assertOk();
@@ -42,18 +42,37 @@ class ItemControllerTest extends TestCase
         $this->assertDatabaseCount('items', 3);
     }
 
+    function test_not_get_index_page_by_unlogged_in_user()
+    {
+        $this->post('logout');
+        $this->assertGuest();
+
+        $response = $this->get('customers');
+        $response->assertStatus(302);
+        $response->assertRedirect('login');
+    }
+
 
     /**
      * Create
      * Items/Createの取得
      */
-    public function test_get_items_create()
+    function test_get_items_create()
     {
         $this->get('items/create')
             ->assertOk();
     }
 
-    
+    function test_not_get_create_page_by_unlogged_in_user()
+    {
+        $this->post('logout');
+        $this->assertGuest();
+
+        $response = $this->get('items/create');
+        $response->assertStatus(302);
+        $response->assertRedirect('login');
+    }
+
     /**
      * Store
      * ValidDataでのItemの登録
@@ -61,7 +80,7 @@ class ItemControllerTest extends TestCase
      * InvalidDataでのItemの登録(入力最大値)
      * NotLoggedUserでのItemの登録
      */
-    public function test_valid_item()
+    function test_valid_item()
     {
        $response = $this->post('items', [
         'name' => 'Okinawa',
@@ -71,9 +90,10 @@ class ItemControllerTest extends TestCase
        ]);
 
        $response->assertValid();
+       $this->assertDatabaseCount('items', 4);
     }
 
-    public function test_invalid_item_of_required()
+    function test_invalid_item_of_required()
     {
        $response = $this->post('items', [
         'name' => '',
@@ -89,7 +109,7 @@ class ItemControllerTest extends TestCase
         ]);
     }
 
-    public function test_invalid_item_of_maximum_value()
+    function test_invalid_item_of_maximum_value()
     {
        $response = $this->post('items', [
         'name' => str_repeat('a', 51),
@@ -104,11 +124,11 @@ class ItemControllerTest extends TestCase
         ]);
     }
 
-    public function test_registration_by_not_logged_in_user()
+    function test_registration_by_not_logged_in_user()
     {
-        $this->assertEquals('1', \Auth::id());
+        $this->assertAuthenticated();
         $this->post('logout');
-        $this->assertNull(\Auth::id());
+        $this->assertGuest();
 
         $this->post('items', [
             'name' => 'Okinawa',
@@ -124,22 +144,42 @@ class ItemControllerTest extends TestCase
      * Show
      * Items/Showの取得
      */
-    public function test_get_items_show_page()
+    function test_get_items_show_page()
     {
         $item = Item::find(1);
         $this->get("items/{$item->id}")
             ->assertOk();
     }
 
+    function test_not_get_show_page_by_unlogged_in_user()
+    {
+        $this->post('logout');
+        $this->assertGuest();
+
+        $response = $this->get('items/1');
+        $response->assertStatus(302);
+        $response->assertRedirect('login');
+    }
+
      /**
       * Edit
       * Items/Editの取得
       */
-    public function test_get_items_edit_page()
+    function test_get_items_edit_page()
     {
         $item = Item::find(1);
         $this->get("items/{$item->id}/edit")
             ->assertOk();
+    }
+
+    function test_not_get_edit_page_by_unlogged_in_user()
+    {
+        $this->post('logout');
+        $this->assertGuest();
+
+        $response = $this->get('items/1/edit');
+        $response->assertStatus(302);
+        $response->assertRedirect('login');
     }
 
     /**
@@ -149,7 +189,7 @@ class ItemControllerTest extends TestCase
      * InvalidDataでのItemの登録(入力最大値)
      * NotLoggedUserでのItemの登録
      */
-    public function test_update_valid_item()
+    function test_update_valid_item()
     {
         $item = Item::find(1);
         assertTrue($item->name === 'カット');
@@ -166,7 +206,7 @@ class ItemControllerTest extends TestCase
         assertTrue($updated_item->name === 'Okinawa');
     }
 
-    public function test_non_update_invalid_item_of_required()
+    function test_non_update_invalid_item_of_required()
     {
         $item = Item::find(1);
 
@@ -184,7 +224,7 @@ class ItemControllerTest extends TestCase
         ]);
     }
 
-    public function test_non_update_invalid_item_of_maximum_value()
+    function test_non_update_invalid_item_of_maximum_value()
     {
         $item = Item::find(1);
 
@@ -201,11 +241,10 @@ class ItemControllerTest extends TestCase
         ]);
     }
 
-    public function test_updating_by_not_logged_in_user()
+    function test_updating_by_not_logged_in_user()
     {
-        $this->assertEquals('1', \Auth::id());
         $this->post('logout');
-        $this->assertNull(\Auth::id());
+        $this->assertGuest();
 
         $item = Item::find(1);
 
@@ -224,18 +263,18 @@ class ItemControllerTest extends TestCase
      * Itemの削除
      * NotLoggedUserでのItemの削除
      */
-    public function test_delete_anItem()
+    function test_delete_anItem()
     {
         $this->assertDatabaseCount('items', 3);
         $this->delete("items/1");
         $this->assertDatabaseCount('items', 2);
     }
 
-    public function test_not_delete_by_logged_in_user()
+    function test_not_delete_by_logged_in_user()
     {
-        $this->assertEquals('1', \Auth::id());
+        $this->assertAuthenticated();
         $this->post('logout');
-        $this->assertNull(\Auth::id());
+        $this->assertGuest();
         
         $this->assertDatabaseCount('items', 3);
         $this->delete("items/1");

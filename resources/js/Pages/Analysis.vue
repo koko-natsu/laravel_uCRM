@@ -38,6 +38,7 @@ const getData = async () => {
             }
         })
         .then( res => {
+            console.log(res.data.data)
             data.data = res.data.data
             if(res. data.labels) {data.labels = res.data.labels}
             if(res. data.eachCount) {data.eachCount = res.data.eachCount}

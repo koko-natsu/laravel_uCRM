@@ -9,9 +9,8 @@ use Illuminate\Support\Facades\Log;
 
 Route::middleware('auth:sanctum')
 ->get('/searchCustomers', function (Request $request) {
-    return Customer::apiSearchCustomer($request->search)->Paginate(50);
+    return Customer::apiSearchCustomer($request->search);
         // ->withPath("/customers?search={$request->search}")
-    ;
 });
 
 
